@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+   {% block content %}
+    <center>
+            <h2>are you sure want to delete record ? 
+                 title = {{task.name}}
+            </h2>
+            <a class="btn btn-danger" href="{% url 'delete_passenger' task.id %}">Delete</a>
+            <a class="btn btn-warning" href="{% url 'passenger_details' %}">cancel</a>
+    </center>
+
+    {% endblock content %}

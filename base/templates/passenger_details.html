@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">FLIGHT NAME</th>            
+            <th scope="col">DEPARTURE</th>
+            <th scope="col">DESTINATION</th>
+            <th scope="col">DEPARTURE TIME</th>
+            <th scope="col">DESTINATION TIME</th>            
+            <th scope="col">PRICE</th>
+            <th scope="col">NAME</th>
+            <th scope="col">AGE</th>
+            <th scope="col">PHONE</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">AADHAR NUMBER</th>
+            <th scope="col">ACTION</th>
+            <th scope="col">ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if not passengerdata %}
+        <tr>
+            <td colspan="8" style="text-align: center;">{{ 'No data Found.' }}</td>
+        </tr>
+        {% endif %}
+        {% for i in passengerdata %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.flight_name}}</td>
+            <td>{{i.departure}}</td>
+            <td>{{i.destination}}</td>
+            <td>{{i.departure_time}}</td>
+            <td>{{i.destination_time}}</td>
+            <td>{{i.price}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>            
+            <td>{{i.phone}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.aadhar_number}}</td>
+            <td><a class="btn btn-primary" href="{% url 'edit_passenger' i.id %}">EDIT</a></td>
+            <td><a class="btn btn-danger" href="{% url 'confirm_delete' i.id %}">DELETE</a></td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+{% endblock content %}
+
