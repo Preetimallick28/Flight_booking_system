@@ -1,1 +1,4 @@
 venv/
+base/__pycache__/
+base/migrations/__pycache__/
+myproject/__pycache__/
