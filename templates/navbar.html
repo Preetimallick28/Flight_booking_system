@@ -1,12 +1,11 @@
 <nav>
     <div class="logo">
-       <a class="btn" href="{% url 'home' %}"><h2>FLIGHT</h2></a>
+        <h2><a href="{% url 'home' %}"><img class="img-fluid" style="width: 10%;border-radius: 50%;" src="https://toppng.com/uploads/preview/flight-logo-11549898075cfemskecyq.png"></a></h2>
     </div>
-    <div class="links">
-        <a href="{% url 'passenger_details' %}">Booking</a>
-        <a href="">About</a>
-        <a href="{% url 'history' %}">History</a>
-        <a href="">Support</a>
+    <div>
+        <a href="{% url 'booking_list' %}">BOOKING LIST</a>
+        <a href="{% url 'about' %}">ABOUT</a>
+        <a href="{% url 'history_passenger_data' %}">HISTORY</a>
+        <a href="">SUPPORT</a>
     </div>
-    
 </nav>

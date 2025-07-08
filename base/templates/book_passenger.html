@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+<div class="form-container">
+  <h2>Flight Booking Form</h2>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label>Flight Name</label>
+    <input type="text" name="flight_name" value="{{data.flight_name}}">
+
+    <label>Flight Departure</label>
+    <input type="text" name="flight_departure" value="{{data.flight_departure}}">
+
+    <label>Flight Destination</label>
+    <input type="text" name="flight_destination" value="{{data.flight_destination}}">
+
+    <label>Flight Departure Time</label>
+    <input type="text" name="flight_departure_time" value="{{data.flight_departure_time}}">
+
+    <label>Flight Destination Time</label>
+    <input type="text" name="flight_destination_time" value="{{data.flight_destination_time}}">
+
+    <label>Flight Ticket Price</label>
+    <input type="text" name="flight_ticket_price" value="{{data.flight_ticket_price}}">
+
+    <label>Passenger Name</label>
+    <input type="text" name="p_name">
+
+    <label>Passenger Age</label>
+    <input type="text" name="p_age">
+
+    <label>Passenger Gender</label>
+    <input type="text" name="p_gender">
+
+    <label>Passenger Phone Number</label>
+    <input type="text" name="p_number">
+
+    <label>Passenger Email</label>
+    <input type="text" name="p_email">
+
+    <label>Passenger Aadhar</label>
+    <input type="text" name="p_aadhar">
+
+    <button type="submit" class="btn btn-fancy">Submit</button>
+  </form>
+</div>
+{% endblock content %}
