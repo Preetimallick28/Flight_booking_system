@@ -1,0 +1,11 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="card card-animated">
+    <div class="card-body">
+        {% for i in data %}
+      <h5 class="card-title">{{ i.flight_company_name }}</h5>
+      <a href="{% url 'flight_details_list' i.flight_company_name %}" class="btn btn-fancy">DETAILS</a>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}

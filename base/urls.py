@@ -3,13 +3,15 @@ from base import views
 
 urlpatterns = [
     path('',views.home,name='home'),
-    path('details_page/<int:pk>/', views.flight_details_page, name='details_page'),
-    path('book_now/<int:pk>/', views.book_now, name='book_now'),
-    path('passanger_details/', views.passenger, name='passenger_details'),
-    path('passenger_edit/<int:pk>', views.edit_passenger, name='edit_passenger'),
+    path('about/',views.about,name='about'),
+    path('flight_details_list/<str:pk>',views.flight_details_list,name='flight_details_list'),
+    path('book_passenger/<str:pk>',views.book_passenger,name='book_passenger'),
+    path('booking_list',views.booking_list,name='booking_list'),
+    path('update/<int:pk>',views.update_passenger_list,name='update'),
     path('confirm_delete/<int:pk>',views.confirm_delete,name='confirm_delete'),
-    path('delete_passanger/<int:pk>', views.delete_passanger, name='delete_passenger'),
-    path('history',views.history,name='history'),
-    path('restore_task/<int:pk>',views.restore_task,name='restore_task'),
-    path('delete_task/<int:pk>',views.delete_task,name='delete_task'),
+    path('delete_passenger_data/<int:pk>',views.delete_passenger_data,name='delete_passenger_data'),
+    path('history_passenger_data',views.history_passenger_data,name='history_passenger_data'),
+    path('history_delete/<int:pk>',views.history_delete,name='history_delete'),
+    path('restore_data/<int:pk>',views.restore_data,name='restore_data'),
+
 ]

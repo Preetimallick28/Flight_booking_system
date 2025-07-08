@@ -1,125 +1,129 @@
-from django.shortcuts import render , redirect , get_object_or_404
-from base.models import flight_company_model,flight_details,passenger_details,history_model
+from django.shortcuts import render , redirect
+from base.models import flight_companies , flight_details , bookModel , historyModel
+
 # Create your views here.
 
 def home(request):
-    flight = flight_company_model.objects.all() 
-    return render(request,'home.html',{'flightnames':flight})
+    data = flight_companies.objects.all()
+    return render(request,'flight_companies.html',{'data':data})
 
-# def flight_details_page(request,pk):    
-#     specific_flight = flight_details.objects.get(id=pk)
-#     return render(request,'details.html',{'data':specific_flight})
+def about(request):
+    return render(request,'about.html')
 
-def flight_details_page(request, pk):    
-    specific_flight_details = flight_details.objects.filter(flight_company=pk)
-    return render(request, 'details.html', {'flight_data': specific_flight_details,'name':pk})
+def flight_details_list(request,pk):
+    data = flight_details.objects.filter(flight_company_name=pk)
+    return render(request,'flight_details_list.html',{'data':data})
 
-def book_now(request, pk):
-    book = get_object_or_404(flight_details, pk=pk)
-
+def book_passenger(request,pk):
+    data = flight_details.objects.get(flight_name=pk)
     if request.method == 'POST':
-        name = request.POST['name']
-        age = request.POST['age']
-        phone = request.POST['phone']
-        email = request.POST['email']
-        aadhar_number = request.POST['aadhar_number']
+        flight_name=request.POST['flight_name'],
+        flight_departure = request.POST['flight_departure']
+        flight_destination = request.POST['flight_destination']
+        flight_departure_time = request.POST['flight_departure_time']
+        flight_destination_time = request.POST['flight_destination_time']
+        flight_ticket_price = request.POST['flight_ticket_price']
+        passenger_name = request.POST['p_name']
+        passenger_age = request.POST['p_age']
+        passenger_gender = request.POST['p_gender']
+        passenger_phone = request.POST['p_number']
+        passenger_email = request.POST['p_email']
+        passenger_aadhar = request.POST['p_aadhar']
 
-        passenger_details.objects.create(
-            flight=book,
-            flight_name=book.flight_name,
-            departure=book.departure,
-            destination=book.destination,
-            price=book.price,
-            departure_time=book.departure_time,
-            destination_time=book.destination_time,
-            name=name,
-            age=age,
-            phone=phone,
-            email=email,
-            aadhar_number=aadhar_number
+        bookModel.objects.create(
+            flight_name=flight_name,
+            flight_departure=flight_departure,
+            flight_destination=flight_destination,
+            flight_departure_time=flight_departure_time,
+            flight_destination_time=flight_destination_time,
+            flight_ticket_price=flight_ticket_price,
+            passenger_name=passenger_name,
+            passenger_age=passenger_age,
+            passenger_gender=passenger_gender,
+            passenger_phone=passenger_phone,
+            passenger_email=passenger_email,
+            passenger_aadhar=passenger_aadhar
         )
+        return redirect('booking_list')
+    return render(request,'book_passenger.html',{'data':data})
 
-        return redirect('passenger_details')  # or a confirmation page
+def booking_list(request):
+    data = bookModel.objects.all()
+    return render(request,'booking_list.html',{'data':data})
 
-    return render(request, 'book_now.html', {'book': book})
-
-
-def passenger(request):    
-    passenger_data = passenger_details.objects.all()
-    return render(request,'passenger_details.html',{'passengerdata':passenger_data})
-
-
-def edit_passenger(request,pk):
-    data = passenger_details.objects.get(id=pk)
+def update_passenger_list(request,pk):
+    data = bookModel.objects.get(id=pk)
     if request.method == 'POST':
-        name_Data = request.POST['name']
-        age_Data = request.POST['age']
-        phone_Data = request.POST['phone']
-        email_Data = request.POST['email']
-        aadhar_Data = request.POST['aadhar_number']
+        passenger_name = request.POST['p_name']
+        passenger_age = request.POST['p_age']
+        passenger_gender = request.POST['p_gender']
+        passenger_phone = request.POST['p_number']
+        passenger_email = request.POST['p_email']
+        passenger_aadhar = request.POST['p_aadhar']
 
-        # override
-        # student.sname - old data
-        # name_Data - new data
-        data.name = name_Data  
-        data.age = age_Data
-        data.phone = phone_Data
-        data.email = email_Data
-        data.aadhar_number = aadhar_Data
+        data.passenger_name=passenger_name
+        data.passenger_age = passenger_age
+        data.passenger_gender = passenger_gender
+        data.passenger_phone = passenger_phone
+        data.passenger_email = passenger_email
+        data.passenger_aadhar = passenger_aadhar
+
         data.save()
-        return redirect('passenger_details')
+        return redirect('booking_list')
 
-    return render(request,'passanger_edit.html',{'data':data})
+
+    return render(request,'update.html',{'data':data})
 
 def confirm_delete(request,pk):
-    task=passenger_details.objects.get(id=pk)
-    return render(request,'confirm_delete.html',{'task':task})
-
-
-def delete_passanger(request,pk):
-    del_pass = passenger_details.objects.get(id=pk)
-    history_model.objects.create(
-        name = del_pass.name,
-        age = del_pass.age,
-        phone = del_pass.phone,
-        email = del_pass.email,
-        aadhar_number = del_pass.aadhar_number,
-        flight_name = del_pass.flight_name,
-        departure = del_pass.departure,
-        price = del_pass.price,
-        destination = del_pass.destination,
-        departure_time = del_pass.departure_time,
-        destination_time = del_pass.destination_time,
-    )
-    del_pass.delete()
-    return redirect('history')
-
-def history(request):
-    history_Data = history_model.objects.all()
-    return render(request,'history.html',{'historydata':history_Data})
-
-def restore_task(request,pk):
-    restore_data = history_model.objects.get(id=pk)
-    print(restore_data)
-    passenger_details.objects.create(
-        name = restore_data.name,
-        age = restore_data.age,
-        phone = restore_data.phone,
-        email = restore_data.email,
-        aadhar_number = restore_data.aadhar_number,
-        departure = restore_data.departure,
-        destination = restore_data.destination,
-        flight_name = restore_data.flight_name,
-        destination_time = restore_data.destination_time,
-        departure_time = restore_data.departure_time,
-        price = restore_data.price
-
-    )
-    restore_data.delete()
-    return render(request,'passenger_details.html')
+    data = bookModel.objects.get(id=pk)
+    return render(request,'confirm_delete.html',{'data':data})
     
-def delete_task(request,pk):
-    delete_task = history_model.objects.get(id=pk)
-    delete_task.delete()
 
-    return redirect('passenger_details')
+
+def delete_passenger_data(request,pk):
+    data = bookModel.objects.get(id=pk)
+    historyModel.objects.create(
+        flight_name=data.flight_name,
+        flight_departure=data.flight_departure,
+        flight_destination=data.flight_destination,
+        flight_departure_time=data.flight_departure_time,
+        flight_destination_time=data.flight_destination_time,
+        flight_ticket_price=data.flight_ticket_price,
+        passenger_name=data.passenger_name,
+        passenger_age=data.passenger_age,
+        passenger_gender=data.passenger_gender,
+        passenger_phone=data.passenger_phone,
+        passenger_email=data.passenger_email,
+        passenger_aadhar=data.passenger_aadhar
+    )
+    data.delete()   
+    return redirect('history_passenger_data')
+
+def history_passenger_data(request):
+    data = historyModel.objects.all()
+    return render(request,'history_passenger.html',{'data':data})
+
+def history_delete(request,pk):
+    data= historyModel.objects.get(id=pk)
+    data.delete()
+    return redirect('history_passenger_data')
+
+def restore_data(request,pk):
+    data = historyModel.objects.get(id=pk)
+    bookModel.objects.create(
+        flight_name=data.flight_name,
+        flight_departure=data.flight_departure,
+        flight_destination=data.flight_destination,
+        flight_departure_time=data.flight_departure_time,
+        flight_destination_time=data.flight_destination_time,
+        flight_ticket_price=data.flight_ticket_price,
+        passenger_name=data.passenger_name,
+        passenger_age=data.passenger_age,
+        passenger_gender=data.passenger_gender,
+        passenger_phone=data.passenger_phone,
+        passenger_email=data.passenger_email,
+        passenger_aadhar=data.passenger_aadhar
+    )
+    data.delete()
+    return redirect('booking_list')
+
